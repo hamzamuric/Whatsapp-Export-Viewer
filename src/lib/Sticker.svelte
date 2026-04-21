@@ -61,14 +61,6 @@
         font-size: 0.9rem;
     }
 
-    .left .sender, .left .text {
-        text-align: left;
-    }
-
-    .right .sender, .right .text {
-        text-align: right;
-    }
-
     .text {
         display: flex;
         justify-content: space-between;
@@ -81,18 +73,6 @@
         font-size: 0.6rem;
         font-weight: bold;
         opacity: 0.6;
-    }
-
-    .left .text, .left .time {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    .right .text, .right .time {
-        display: flex;
-        flex-direction: row-reverse;
-        flex-wrap: wrap;
     }
 
     .meta {

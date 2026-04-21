@@ -56,11 +56,6 @@
         border-bottom-right-radius: 0;
     }
 
-    .inner:has(.sticker), .emoji {
-        background-color: transparent !important;
-        font-size: 2rem;
-    }
-
     .sender {
         font-weight: bold;
         font-size: 0.9rem;
@@ -80,6 +75,17 @@
         align-items: baseline;
         gap: 6px;
         font-family: Verdana, Geneva, Tahoma, sans-serif;
+        overflow-wrap: break-word;
+        overflow: clip;
+    }
+
+    .emoji>.text {
+        overflow: unset;
+    }
+
+    .inner:has(.sticker), .emoji {
+        background-color: transparent !important;
+        font-size: 2rem;
     }
 
     .time {

@@ -1,5 +1,5 @@
 <script>
-    const { side, sender, time } = $props();
+    const { attachment, side, sender, time } = $props();
 </script>
 
 <div class={"message " + side}>
@@ -7,7 +7,7 @@
         {#if side === 'left' && sender}
             <span class="sender">{sender}</span>
         {/if}
-        <span class="one-time">① One time message</span>
+        <img class="attachment" src={attachment} alt="attachment" />
     </div>
     <div class="meta">
         <span class="time">{time}</span>
@@ -100,11 +100,5 @@
         max-height: 400px;
         border-radius: 12px;
         padding: 6px 0;
-
-    }
-
-    .sticker {
-        max-width: 100px;
-        max-height: 100px;
     }
 </style>

@@ -3,7 +3,9 @@
     import Message from "./lib/Message.svelte";
     import Sticker from "./lib/Sticker.svelte";
     import OneTime from "./lib/OneTime.svelte";
-    import Attachment from "./lib/Attachment.svelte";
+    import Audio from "./lib/Audio.svelte";
+    import Video from "./lib/Video.svelte";
+    import Image from "./lib/Image.svelte";
 
     let files = $state();
     let attachments = $state(new Map());
@@ -87,11 +89,21 @@
 
         if (attachmentName) {
           const attachment = attachments.get(attachmentName);
-          if (attachmentName.includes('STICKER')) {
-            parsedMessages.push({ type: 'sticker', sender, time, sticker: attachment });
-          } else {
-            parsedMessages.push({ type: 'attachment', sender, time, attachment });
+          const parts = attachmentName.split('.');
+          const extension = parts.at(-1);
+
+          if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension)) {
+            if (attachmentName.includes('STICKER')) {
+              parsedMessages.push({ type: 'sticker', sender, time, sticker: attachment });
+            } else {
+              parsedMessages.push({ type: 'image', sender, time, attachment });
+            }
+          } else if (['mp4', 'mov', 'avi', 'mkv'].includes(extension)) {
+            parsedMessages.push({ type: 'video', format: extension, sender, time, attachment });
+          } else if (['opus', 'wav', 'ogg', 'mp3'].includes(extension)) {
+            parsedMessages.push({ type: 'audio', sender, time, attachment });
           }
+
 
           continue;
         }
@@ -110,7 +122,7 @@
           : text;
 
 
-        let emoji = /^(\s*\p{Emoji}\s*){1,6}$/u.test(text);
+        let emoji = /^(\s*\p{Emoji}\s*){1,6}$/u.test(text) && !/\d+/.test(text);
 
         parsedMessages.push({ type: 'text', emoji, sender, time, text: messageText, edited });
       }
@@ -136,8 +148,12 @@
                 <div class="new-date"><span>{message.date}</span></div>
             {:else if message.type === 'sticker'}
                 <Sticker time={message.time} sticker={message.sticker} sender={users.length > 2 ? message.sender : undefined} side={message.sender === selectedUser ? 'right' : 'left'} />
-            {:else if message.type === 'attachment'}
-                <Attachment time={message.time} attachment={message.attachment} sender={users.length > 2 ? message.sender : undefined} side={message.sender === selectedUser ? 'right' : 'left'} />
+            {:else if message.type === 'audio'}
+                <Audio time={message.time} attachment={message.attachment} sender={users.length > 2 ? message.sender : undefined} side={message.sender === selectedUser ? 'right' : 'left'} />
+            {:else if message.type === 'video'}
+                <Video time={message.time} attachment={message.attachment} format={message.format} sender={users.length > 2 ? message.sender : undefined} side={message.sender === selectedUser ? 'right' : 'left'} />
+            {:else if message.type === 'image'}
+                <Image time={message.time} attachment={message.attachment} sender={users.length > 2 ? message.sender : undefined} side={message.sender === selectedUser ? 'right' : 'left'} />
             {:else if message.type === 'one-time'}
                 <OneTime time={message.time} sender={users.length > 2 ? message.sender : undefined} side={message.sender === selectedUser ? 'right' : 'left'} />
             {:else}
@@ -152,6 +168,7 @@
     :global(body) {
         display: grid;
         place-items: center;
+        background-color: darkslategray;
     }
 
     #app {
@@ -171,16 +188,17 @@
     }
 
     .new-date span {
-        background-color: lightgray;
+        background-color: gray;
         padding: 2px 6px;
         border-radius: 8px;
         font-size: 0.7rem;
-        color: black;
-        opacity: 0.8;
+        color: white;
+        opacity: 0.6;
     }
 
     input[type="file"] {
         padding: 6px 12px;
+        color: white;
     }
 
     select {

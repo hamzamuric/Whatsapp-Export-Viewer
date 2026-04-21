@@ -1,5 +1,5 @@
 <script>
-    const { attachment, side, sender, time } = $props();
+    const { attachment, side, sender, time, format } = $props();
 </script>
 
 <div class={"message " + side}>
@@ -7,7 +7,9 @@
         {#if side === 'left' && sender}
             <span class="sender">{sender}</span>
         {/if}
-        <img class="attachment" src={attachment} alt="attachment" />
+        <video class="attachment" controls>
+            <source src={attachment} type={"video/" + format}>
+        </video>
     </div>
     <div class="meta">
         <span class="time">{time}</span>
@@ -51,22 +53,9 @@
         border-bottom-right-radius: 0;
     }
 
-    .inner:has(.sticker), .emoji {
-        background-color: transparent !important;
-        font-size: 2rem;
-    }
-
     .sender {
         font-weight: bold;
         font-size: 0.9rem;
-    }
-
-    .left .sender, .left .text {
-        text-align: left;
-    }
-
-    .right .sender, .right .text {
-        text-align: right;
     }
 
     .text {
@@ -81,18 +70,6 @@
         font-size: 0.6rem;
         font-weight: bold;
         opacity: 0.6;
-    }
-
-    .left .text, .left .time {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    .right .text, .right .time {
-        display: flex;
-        flex-direction: row-reverse;
-        flex-wrap: wrap;
     }
 
     .meta {
@@ -126,10 +103,5 @@
         border-radius: 12px;
         padding: 6px 0;
 
-    }
-
-    .sticker {
-        max-width: 100px;
-        max-height: 100px;
     }
 </style>

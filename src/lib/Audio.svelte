@@ -1,5 +1,5 @@
 <script>
-    const { side, sender, time } = $props();
+    const { attachment, side, sender, time } = $props();
 </script>
 
 <div class={"message " + side}>
@@ -7,7 +7,7 @@
         {#if side === 'left' && sender}
             <span class="sender">{sender}</span>
         {/if}
-        <span class="one-time">① One time message</span>
+        <audio class="attachment" controls src={attachment}></audio>
     </div>
     <div class="meta">
         <span class="time">{time}</span>
@@ -35,6 +35,7 @@
         display: flex;
         flex-direction: column;
         border-radius: 12px;
+        background-color: transparent !important;
     }
 
     .left .inner {
@@ -77,34 +78,5 @@
 
     .meta span {
         line-height: 1.2;
-    }
-
-    .edited {
-        font-size: 0.6rem;
-        font-weight: bold;
-        opacity: 0.6;
-    }
-
-    .one-time {
-        opacity: 0.8;
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-
-    .attachment {
-        max-width: 60ch;
-        max-height: 400px;
-        border-radius: 12px;
-        padding: 6px 0;
-
-    }
-
-    .sticker {
-        max-width: 100px;
-        max-height: 100px;
     }
 </style>
